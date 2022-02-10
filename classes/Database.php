@@ -15,4 +15,6 @@ class Database {
 			return $statement->fetchAll();
 		return true;
 	}
+	
+	
 }

@@ -1,10 +1,12 @@
 <?php
 
 if(isset($_POST['sub'])){
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $email = $_POST['email'];
     
+    require("../api/registrieren/registrieren.php");
 }
-
-
 
 ?>
 <!DOCTYPE html>
