@@ -7,7 +7,7 @@ $method = $_SERVER["REQUEST_METHOD"];
 
 $request_uri = $_SERVER["REQUEST_URI"];
 
-$apiPaths = ["posts"];
+$apiPaths = ["login"];
 $url = rtrim($request_uri, "/");
 $url = filter_var($request_uri, FILTER_SANITIZE_URL);
 $url = explode("/", $url);
@@ -21,8 +21,8 @@ if ($url[4] != null) {
 }
 
 if (in_array($path, $apiPaths)) {
-	include_once "./classes/Database.php";
-	include_once "./api/posts.php";
+	include_once "../classes/Database.php";
+	include_once "./$path.php";
 } else {
-	echo json_encode(["message" => "Table does not exists"]);
+	echo json_encode(["message" => "Path does not exists"]);
 }
