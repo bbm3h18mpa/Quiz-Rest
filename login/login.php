@@ -1,7 +1,7 @@
 <?php
 
 if(isset($_POST['sub'])){
-    
+    require("../api/login.login.php");
 }
 
 
