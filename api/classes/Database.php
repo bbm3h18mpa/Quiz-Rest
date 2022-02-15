@@ -11,7 +11,7 @@ class Database {
 	public static function execute($sql, $params = array()) {
 		$statement = self::connect()->prepare($sql);
 		$statement->execute($params);
-		if (strcasecmp(explode(' ', $sql)[0], "select"))
+		if (strcasecmp(explode(' ', $sql)[0], "select") === 0)
 			return $statement->fetchAll();
 		return true;
 	}
