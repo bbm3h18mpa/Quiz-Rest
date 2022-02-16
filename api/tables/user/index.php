@@ -38,12 +38,15 @@ if($method == "POST"){
 			':verified' => 0
 		));
 		mail();
-        $data = Database::execute('select * from "USER" order by id desc fetch first 1 rows only')[0];
+        $data = Database::execute('select * from "USER" where EMAIL = :email', array(":email" => $email))[0];
 	    Database::execute("insert into EMAIL_VERIFICATION values (
-        	${date['id']},
-        	{base64_encode(random_bytes(16))},
-        	{MyDateTimeConverter::toString(new DateTime())}
-    	)");
+        	${data['id']},
+            :verification_id,
+   			:creation_time
+    	)", array(
+			":verification_id" => base64_encode(random_bytes(16)),
+		    "creation_time" => MyDateTimeConverter::toString(new DateTime())
+	    ));
         http_response_code(201);
         echo json_encode(['message' => 'User registrierung erfolgreich.', 'success' => true, 'post' => $data[0]]);
     } else {
