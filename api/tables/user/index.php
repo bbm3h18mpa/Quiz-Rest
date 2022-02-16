@@ -54,7 +54,7 @@ if($method == "POST"){
 
     $to      = $email;
     $subject = "Verifying your registration as $username for Quiz-App ";
-    $message = 'Please Click "<a href=verify.php>here</a>" to verify your registration  ';
+    $message = 'Please Click "<a href=https://quiz.florianten.de/verify.php>here</a>" to verify your registration  ';
     $headers = "From: NoReplyQuizzApp@quizapp.com" . "\r\n" .
         "Reply-To: $email ". "\r\n" .
         "X-Mailer: PHP/" . phpversion();
