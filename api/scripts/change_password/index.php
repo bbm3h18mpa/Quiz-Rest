@@ -34,7 +34,7 @@ if ($method == 'POST') {
 		return;
 	}
 
-	$result = Database::execute("select \"USER\", CREATION_TIME from CHANGE_PASSWORD_VERIFICATION where VERIFICATION_ID = :id", array(":id" => $_GET["verification_id"]));
+	$result = Database::execute("select player, CREATION_TIME from CHANGE_PASSWORD_VERIFICATION where VERIFICATION_ID = :id", array(":id" => $_GET["verification_id"]));
 
 	if (sizeof($result) !== 1) {
 		http_response_code(404);
@@ -44,7 +44,7 @@ if ($method == 'POST') {
 	$result = $result[0];
 	$user_id = $result["USER"];
 
-	Database::execute('delete from CHANGE_PASSWORD_VERIFICATION where "USER" = :user_id', array(":user_id" => $user_id));
+	Database::execute('delete from CHANGE_PASSWORD_VERIFICATION where player = :user_id', array(":user_id" => $user_id));
 
 	$minutes_since_creation_time = abs((new DateTime())->diff($creation_time)->format("H")) / 60;
 	if ($minutes_since_creation_time > 60) {
@@ -53,10 +53,10 @@ if ($method == 'POST') {
 		return;
 	}
 
-	$salt = Database::execute('select salt from "USER" where id = :id', array(":id" => $user_id))[0]["SALT"];
+	$salt = Database::execute('select salt from player where id = :id', array(":id" => $user_id))[0]["SALT"];
 
 	$new_password = PasswordManager::hashFromString($new_password, $salt);
-	Database::execute('update "USER" set password = :password where id = :id', array(':password' => $new_Password, ':id' => $user_id));
+	Database::execute('update player set password = :password where id = :id', array(':password' => $new_Password, ':id' => $user_id));
 
 	http_response_code(201);
 	echo json_encode(array('message' => 'successful'));
