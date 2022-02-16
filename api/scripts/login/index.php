@@ -7,7 +7,7 @@ if ($method == 'GET') {
     extract($_POST);
     $salt = Database::execute('select salt from player where id = :id', array(":id" => $user_id))[0]["SALT"];
     PasswordManager::hashFromString($new_password, $salt);
-    $data = Database::execute('SELECT * FROM player WHERE username=:username and password=:password', array(':username' => $username, ':password' => $password));
+    $data = Database::execute('SELECT * FROM player WHERE username = :username or email = :username and password = :password', array(':username' => $username, ':password' => $password));
     if ($data != null) {
         echo json_encode($data[0]);
     } else {
