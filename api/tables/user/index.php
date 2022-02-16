@@ -47,6 +47,16 @@ if($method == "POST"){
 			":verification_id" => base64_encode(random_bytes(16)),
 		    "creation_time" => MyDateTimeConverter::toString(new DateTime())
 	    ));
+
+        $to      = $email;
+        $subject = "Verifying your registration as $username for Quiz-App ";
+        $message = 'Please Click "<a href=verify.php>here</a>" to verify your registration  ';
+        $headers = "From: NoReplyQuizzApp@quizapp.com" . "\r\n" .
+            "Reply-To: $email ". "\r\n" .
+            "X-Mailer: PHP/" . phpversion();
+
+        mail($to, $subject, $message, $headers);
+
         http_response_code(201);
         echo json_encode(['message' => 'User registrierung erfolgreich.', 'success' => true, 'post' => $data[0]]);
     } else {
