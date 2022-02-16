@@ -17,8 +17,9 @@ if($method == "POST"){
             return;
         }
         $salt = base64_encode(random_bytes(16));
-        Database::execute('insert into "USER" values(
-            null,
+        Database::execute('insert into "USER" (
+            email, username, password, salt, session_key, session_creation_time, institution, verified
+		) values(
             :email,
             :username,
             :password,
@@ -37,7 +38,7 @@ if($method == "POST"){
 			':institution' => $institution,
 			':verified' => 0
 		));
-		mail();
+
         $data = Database::execute('select * from "USER" where EMAIL = :email', array(":email" => $email))[0];
 	    Database::execute("insert into EMAIL_VERIFICATION values (
         	${data['id']},
