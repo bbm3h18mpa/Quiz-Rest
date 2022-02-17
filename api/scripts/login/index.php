@@ -4,7 +4,13 @@ require "${_SERVER["DOCUMENT_ROOT"]}/api/rest_init.php";
 /** @var string $method */ //for better code highlighting in PhpStorm
 
 if ($method == 'POST') {
-    extract($_POST);
+    extract(json_decode(file_get_contents('php://input'), true));
+    if (!isset($email, $username, $password)) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Not all required attributes are set']);
+        return;
+    }
+
     //$salt = Database::execute('select salt from player where id = :id', array(":id" => $user_id))[0]["SALT"];
     //PasswordManager::hashFromString($new_password, $salt);
     $data = Database::execute('SELECT * FROM player WHERE username = :username or email = :username and password = :password', array(':username' => $username, ':password' => $password));

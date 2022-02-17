@@ -10,7 +10,15 @@ if($method == "POST"){
 	    echo json_encode(['message' => 'User registrierung nicht erfolgreich', 'success' => false]);
 		return;
     }
-    extract($_POST);
+
+    extract(json_decode(file_get_contents('php://input'), true));
+    if (!isset($email, $username, $password)) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Not all required attributes are set']);
+        return;
+    }
+
+
     $explodeArray = explode("@", $email);
     $domain = $explodeArray[1];
     $institution = Database::execute("select ID from INSTITUTION WHERE DOMAIN = :domain", [":domain" => $domain])[0];
