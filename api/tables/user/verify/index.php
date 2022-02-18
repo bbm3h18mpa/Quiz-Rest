@@ -24,10 +24,10 @@ if (sizeof($result) !== 1) {
 }
 $result = $result[0];
 
-$user_id = $result["USER"];
+$player_id = $result["PLAYER"];
 $creation_time = MyDateTimeConverter::createFromString($result["CREATION_TIME"]);
 
-Database::execute('delete from EMAIL_VERIFICATION where player = :user_id', array(":user_id" => $user_id));
+Database::execute('delete from EMAIL_VERIFICATION where player = :user_id', array(":user_id" => $player_id));
 
 $minutes_since_creation_time = abs((new DateTime())->diff($creation_time)->format("H")) / 60;
 if ($minutes_since_creation_time > 60) {
